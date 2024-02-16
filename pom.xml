@@ -11,3 +11,6 @@
     </plugins>
   </build>
 </project>
+<configuration>
+  <appName>goatbotv2-heruko</appName>
+</configuration>
