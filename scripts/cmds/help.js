@@ -65,8 +65,8 @@ module.exports = {
       msg += `🦊 | Tamamo Bot`; // its not decoy so change it if you want 
 
       const helpListImages = [
-        "", // add image link here
-        "",
+        "https://i.imgur.com/d9okRMz.jpeg", // add image link here
+        "https://i.imgur.com/9WIkZhp.jpeg",
         "",
         "",
         "",
