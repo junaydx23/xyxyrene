@@ -1,70 +1,70 @@
-const axios = require('axios');
-const fs = require('fs');
- 
+const axios = require("axios");
+const { getStreamFromURL } = global.utils;
+
+/*Do not change
+        the credit 🐢👑*/
+
 module.exports = {
-  config: {
-    name: 'niji',
-    version: '1.0',
-    author: 'MarianCross',
-    countDown: 0,
-    role: 0,
-    longDescription: {
-      en: 'anime image gen'
+    config: {
+        name: "niji",
+        aliases: ["nijijourney"],
+        version: "1.0",
+        author: "SiAM | Rehat86",
+        countDown: 5,
+        role: 0,
+        longDescription: "Text to Image",
+        category: "ai",
+        guide: {
+            en: "{pn} prompt --ar [ratio] or reply an image\n\n Example: {pn} 1girl, cute face, masterpiece, best quality --ar 16:9\n[ default 1:1 ]"
+        }
     },
-    category: 'ai',
-    guide: {
-      en: 'Niji v3/4'
+
+    onStart: async function({ api, args, message, event }) {
+        try {
+
+            let prompt = "";
+            let imageUrl = "";
+            let aspectRatio = ""; 
+
+            const aspectIndex = args.indexOf("--ar");
+            if (aspectIndex !== -1 && args.length > aspectIndex + 1) {
+                aspectRatio = args[aspectIndex + 1];
+                args.splice(aspectIndex, 2); 
+            }
+
+            if (event.type === "message_reply" && event.messageReply.attachments && event.messageReply.attachments.length > 0 && ["photo", "sticker"].includes(event.messageReply.attachments[0].type)) {
+                imageUrl = encodeURIComponent(event.messageReply.attachments[0].url);
+            } else if (args.length === 0) {
+                message.reply("Please provide a prompt or reply to an image.");
+                return;
+            }
+            
+            if (args.length > 0) {
+                prompt = args.join(" ");
+            }
+
+            
+            let apiUrl = `https://project-niji.onrender.com/api/generate?prompt=${encodeURIComponent(prompt)}.&aspectRatio=${aspectRatio}&apikey=rehat`;
+            if (imageUrl) {
+                apiUrl += `&imageUrl=${imageUrl}`;
+            }
+
+            const processingMessage = await message.reply("Please wait...⏳");
+            message.reaction("⏳", event.messageID);
+
+            const response = await axios.post(apiUrl);
+            const img = response.data.url;
+
+            await message.reply({
+                attachment: await getStreamFromURL(img)
+            });
+
+            message.unsend(processingMessage.messageID);
+            await message.reaction("✅", event.messageID);
+        } catch (error) {
+            console.error(error);
+            message.reply("An error occurred.");
+            message.reaction("❌", event.messageID);
+        }
     }
-  },
- 
-  onStart: async function ({ message, args, event, api }) {
-    const permission = ["100046162216589"];
-    if (!permission.includes(event.senderID)) {
-      api.sendMessage(
-        `❌ | Command "niji" currently unavailable buy premium to use the command.`,
-        event.threadID,
-        event.messageID
-      );
-      return;
-    }
-    try {
-      const info = args.join(' ');
-      const [prompt] = info.split('|').map(item => item.trim());
-      const text = args.join(" ");
-      if (!text) {
-        return message.reply("❎ | Please provide a prompt");
-      }
-      const modelParam = '1'; // Utilisation du premier modèle uniquement
-      const apiUrl = `https://turtle-apis.onrender.com/api/sdxl?prompt=${prompt}&model=${modelParam}`;
- 
-      const startTime = new Date(); // Heure de début de la génération d'images
- 
-      await message.reply('Please wait...⏳');
- 
-      const form = {};
-      form.attachment = [];
- 
-      // Générer quatre images
-      for (let i = 0; i < 4; i++) {
-        const response = await global.utils.getStreamFromURL(apiUrl);
-        form.attachment.push(response);
-      }
- 
-      const endTime = new Date(); // Heure de fin de la génération d'images
-      const duration = (endTime - startTime) / 1000; // Durée en secondes
- 
-      // Créer le message d'attachement avec le nombre de secondes
-      const attachmentMessage = `Voici les images générées 🎨 (${duration} secondes)`;
- 
-      // Envoyer les quatre images avec le message d'attachement
-      await api.sendMessage({
-        body: attachmentMessage,
-        attachment: form.attachment
-      }, event.threadID);
- 
-    } catch (error) {
-      console.error(error);
-      await message.reply('❎ | Sorry, API has a skill issue');
-    }
-  }
 };
