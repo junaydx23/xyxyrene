@@ -2,7 +2,7 @@ const axios = require("axios");
 const fs = require("fs-extra");
 const path = require("path");
 const KievRPSSecAuth = "";
-const _U = "";
+const _U = "1QYYkobIBrH1RpySRsbWadnJp7ikrOulXgai4dbMaUXHvLeICiO1zLewzjjDSd0u9PCLuRYo5xTJPCt-oHMdSAgpLJ8U90ziZMw_a7Av_grHm8di83yI-ioCeRPUZ0S4rZasAyup7LU_xpdFzFbZ2zteA5IKmvioljauc3gbZtVe67_bQ1hdqBhjjdEgPTMRfYI19LWuuHXOZCshb_C6llg";
 module.exports = {
   config: {
     name: "dalle",
