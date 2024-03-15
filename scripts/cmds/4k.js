@@ -4,7 +4,7 @@ const tinyurl = require('tinyurl');
 module.exports = {
   config: {
     name: "4k",
-    aliases: ["4k", "remini"],
+    aliases: ["4k", "remini", "tamamo"],
     version: "1.0",
     author: "JARiF",
     countDown: 15,
@@ -23,12 +23,12 @@ module.exports = {
         if (["photo", "sticker"].includes(replyAttachment?.type)) {
           return replyAttachment.url;
         } else {
-          throw new Error("┐⁠(⁠￣⁠ヘ⁠￣⁠)⁠┌ | Must reply to an image.");
+          throw new Error(" 🦊 | Must reply to an image.");
         }
       } else if (args[0]?.match(/(https?:\/\/.*\.(?:png|jpg|jpeg))/g) || null) {
         return args[0];
       } else {
-        throw new Error("(⁠┌⁠・⁠。⁠・⁠)⁠┌ | Reply to an image.");
+        throw new Error("🦊 | Reply to an image.");
       }
     };
  
@@ -36,14 +36,14 @@ module.exports = {
       const imageUrl = await getImageUrl();
       const shortUrl = await tinyurl.shorten(imageUrl);
  
-      message.reply("ƪ⁠(⁠‾⁠.⁠‾⁠“⁠)⁠┐ | Please wait...");
+      message.reply("🦊 | Please wait...");
  
       const response = await axios.get(`https://www.api.vyturex.com/upscale?imageUrl=${shortUrl}`);
       const resultUrl = response.data.resultUrl;
  
-      message.reply({ body: "<⁠(⁠￣⁠︶⁠￣⁠)⁠> | Image Enhanced.", attachment: await global.utils.getStreamFromURL(resultUrl) });
+      message.reply({ body: " 🦊❤️ | Image Enhanced.", attachment: await global.utils.getStreamFromURL(resultUrl) });
     } catch (error) {
-      message.reply("┐⁠(⁠￣⁠ヘ⁠￣⁠)⁠┌ | Error: " + error.message);
+      message.reply(" 🦊 | Error: " + error.message);
       // Log error for debugging: console.error(error);
     }
   }
