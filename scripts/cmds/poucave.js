@@ -62,7 +62,7 @@ module.exports = {
       if (msg.attachment.length > 0) {
         api.sendMessage(msg, threadID);
       } else {
-        api.sendMessage(`${name} Rien n'échappe à Tamamo Testarossa 🦊. Tu voulais nous cacher ça: ${getMsg.msgBody}`, threadID);
+        api.sendMessage(`${name} Rien n'échappe à Tamamo Von Einzbern 🦊. Tu voulais nous cacher ça: ${getMsg.msgBody}`, threadID);
       }
     }
   },
