@@ -33,9 +33,9 @@ module.exports = {
         );
       }
       const keySearchs = keySearch.substr(0, keySearch.indexOf('-'))
-      let numberSearch = keySearch.split("-").pop() || 6
-    if (numberSearch> 4 ){
-      numberSearch = 4
+      let numberSearch = keySearch.split("-").pop() || 9
+    if (numberSearch> 9 ){
+      numberSearch = 9
     }
  
       const apiUrl = `https://turtle-apis.onrender.com/api/pinterest?search=${encodeURIComponent(keySearchs)}&keysearch=${numberSearch}`;
