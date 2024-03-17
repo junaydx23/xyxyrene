@@ -1,13 +1,7 @@
 const axios = require('axios');
 
 const Prefixes = [
-  '/ai',
-  'Mélanie',
-  'Tamamo',
-  '+ai',
-  'tamamo',
-  'ai',
-  'ask',
+  'ask'
 ];
 
 module.exports = {
